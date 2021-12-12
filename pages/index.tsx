@@ -1,10 +1,15 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { MoralisProvider } from 'react-moralis'
 import styles from '../styles/Home.module.css'
+
+const APP_ID = process.env.NEXT_PUBLIC_APP_ID ?? '';
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? '';
 
 const Home: NextPage = () => {
   return (
+    <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
     <div className={styles.container}>
       <Head>
         <title>Create Next App</title>
@@ -16,12 +21,6 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
             <h2>Documentation &rarr;</h2>
@@ -66,6 +65,7 @@ const Home: NextPage = () => {
         </a>
       </footer>
     </div>
+      </MoralisProvider>
   )
 }
 
