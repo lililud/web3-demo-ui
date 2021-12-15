@@ -15,6 +15,16 @@ import FeatureToggle from "../abis/FeatureToggle.json";
 
 
 export default function Demo() {
+    const {
+        isWeb3Enabled,
+        isAuthenticated,
+        enableWeb3,
+        authenticate,
+        logout,
+        isAuthenticating,
+        isWeb3EnableLoading,
+        user
+    } = useMoralis();
     const getUserAddress = async () => {
         const web3 = await Moralis.Web3.enableWeb3()
         const accounts = await web3.eth.getAccounts()
