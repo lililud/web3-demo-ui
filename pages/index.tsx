@@ -6,48 +6,11 @@ import styles from '../styles/Home.module.css'
 import { contract as contractAddress } from '../contractAddress';
 import MetamaskLogin from "../components/MetamaskLogin/MetamaskLogin";
 import FeatureToggle from '../abis/FeatureToggle.json';
+import Moralis from "moralis";
 const APP_ID = process.env.NEXT_PUBLIC_APP_ID ?? '';
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? '';
 
 const Home: NextPage = () => {
-    const getUserAddress = async () => {
-        const web3 = await Moralis.Web3.enableWeb3()
-        const accounts = await web3.eth.getAccounts()
-        return accounts[0] as string;
-    };
-    const optionsCore = {
-        contractAddress: contractAddress,
-        abi: FeatureToggle.abi,
-    };
-    const userAddress = await getUserAddress()
-
-    const getIsEnabledOptions = {
-        functionName: "getIsEnabled",
-        params: {
-            toggleId: 0
-        },
-        ...optionsCore
-    }
-
-    const updateToggleOptions = {
-        functionName: "updateToggle",
-        params: {
-            toggleId: 0,
-            isEnabled: true,
-            name: "shouldRenderCopy"
-        },
-        ...optionsCore
-    }
-    const getIsEnabled = async () => {
-        const result = await Moralis.Web3.executeFunction(getIsEnabledOptions)
-        console.log('isEnabled for toggleId 0', result);
-    }
-
-    const updateToggle = async () => {
-        const result = await Moralis.Web3.executeFunction(updateToggleOptions)
-        console.log('updatedToggle', result)
-    }
-
   return (
       <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
     <div className={styles.container}>
