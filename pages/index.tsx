@@ -14,8 +14,6 @@ const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? '';
 const Home: NextPage = () => {
   return (
       <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
-        APP ID: {APP_ID}
-        SERVER_URL ID: {SERVER_URL}
     <div className={styles.container}>
       <Head>
         <title>Create Next App</title>
