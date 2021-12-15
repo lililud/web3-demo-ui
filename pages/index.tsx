@@ -6,14 +6,16 @@ import styles from '../styles/Home.module.css'
 import MyApp from "./_app";
 import Link from 'next/link'
 
-// require('dotenv-webpack').config();
+// require('dotenv').config({path:'..'});
 
 const APP_ID = process.env.NEXT_PUBLIC_APP_ID ?? '';
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? '';
 
 const Home: NextPage = () => {
   return (
-      // <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
+      <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
+        APP ID: {APP_ID}
+        SERVER_URL ID: {SERVER_URL}
     <div className={styles.container}>
       <Head>
         <title>Create Next App</title>
@@ -72,7 +74,7 @@ const Home: NextPage = () => {
         </a>
       </footer>
     </div>
-
+      </MoralisProvider>
   )
 }
 const App = () => {
