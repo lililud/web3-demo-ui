@@ -7,6 +7,7 @@ import { contract as contractAddress } from '../contractAddress';
 import MetamaskLogin from "../components/MetamaskLogin/MetamaskLogin";
 import FeatureToggle from '../abis/FeatureToggle.json';
 import Moralis from "moralis";
+import Demo from "../components/demo";
 const APP_ID = process.env.NEXT_PUBLIC_APP_ID ?? '';
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? '';
 
@@ -21,11 +22,9 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <h3>Metamask Login: <MetamaskLogin/></h3>
         <h1 className={styles.title}>
-            demo page!
-        </h1>
-        <h1 className={styles.title}>
-          <MetamaskLogin/>
+          <Demo/>
 
         </h1>
         contract deployed to: {contractAddress}

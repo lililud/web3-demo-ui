@@ -1,1 +1,1 @@
-export const contract = "0xf4799D96944421Cdc8f770c49b153FA2e1B1a701";
+export const contract = "0xab0D75F1fF310aeB9E54eD11b638dEaFF28e84dE";

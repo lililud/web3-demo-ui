@@ -1,7 +1,10 @@
 import Moralis from "moralis";
-import MetamaskLogin from "../components/MetamaskLogin/MetamaskLogin";
+import MetamaskLogin from "./MetamaskLogin/MetamaskLogin";
 import {contract as contractAddress} from "../contractAddress";
 import FeatureToggle from "../abis/FeatureToggle.json";
+import {useMoralis} from "react-moralis";
+import {useState} from "react";
+import styles from "../styles/Home.module.css";
 
 // const options = {
 //     chain: "eth",
@@ -15,6 +18,8 @@ import FeatureToggle from "../abis/FeatureToggle.json";
 
 
 export default function Demo() {
+
+    const[isToggleEnabled, setIsToggleEnabled] = useState(false);
     const {
         isWeb3Enabled,
         isAuthenticated,
@@ -48,25 +53,31 @@ export default function Demo() {
         functionName: "updateToggle",
         params: {
             toggleId: 0,
-            isEnabled: true,
+            isEnabled: !isToggleEnabled,
             name: "shouldRenderCopy"
         },
         ...optionsCore
     }
     const getIsEnabled = async () => {
         const result = await Moralis.Web3.executeFunction(getIsEnabledOptions)
+        setIsToggleEnabled(result)
         console.log('isEnabled for toggleId 0', result);
     }
+
 
     const updateToggle = async () => {
         const result = await Moralis.Web3.executeFunction(updateToggleOptions)
         console.log('updatedToggle', result)
     }
     return (
-        <div>
-            <h1>Demo!</h1>
-            <button onClick={updateToggle}> update Toggle</button>
+        <div className={styles.container}>
+            <h4>Demo!</h4>
 
+            <button onClick={updateToggle}> update Toggle</button>
+            <br/>
+            <button onClick={getIsEnabled}>getIsEnabled</button>
+            {isToggleEnabled && <h4>toggle is Enabled</h4>}
+            {!isToggleEnabled && <h4>toggle is not enabled</h4>}
 
         </div>)
 
