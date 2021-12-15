@@ -3,13 +3,17 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { MoralisProvider } from 'react-moralis'
 import styles from '../styles/Home.module.css'
+import MyApp from "./_app";
+import Link from 'next/link'
+
+// require('dotenv-webpack').config();
 
 const APP_ID = process.env.NEXT_PUBLIC_APP_ID ?? '';
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? '';
 
 const Home: NextPage = () => {
   return (
-    <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
+      // <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
     <div className={styles.container}>
       <Head>
         <title>Create Next App</title>
@@ -19,7 +23,10 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Read{' '}
+          <Link href="/demo">
+            <a>demo page!</a>
+          </Link>
         </h1>
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
@@ -65,8 +72,14 @@ const Home: NextPage = () => {
         </a>
       </footer>
     </div>
-      </MoralisProvider>
+
   )
 }
-
-export default Home
+const App = () => {
+  // return(
+  //     <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
+  //       <MyApp Component={Home} pageProps={null} router={}/>
+  //     </MoralisProvider>
+  // )
+}
+export default Home;
