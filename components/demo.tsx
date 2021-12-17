@@ -3,8 +3,9 @@ import MetamaskLogin from "./MetamaskLogin/MetamaskLogin";
 import {contract as contractAddress} from "../contractAddress";
 import FeatureToggle from "../abis/FeatureToggle.json";
 import {useMoralis} from "react-moralis";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import styles from "../styles/Home.module.css";
+import {getIsEnabled} from "../web3ApiCalls/getIsEnabled";
 
 // const options = {
 //     chain: "eth",
@@ -18,8 +19,16 @@ import styles from "../styles/Home.module.css";
 
 
 export default function Demo() {
-
+    // const getIsEnabled = async () => {
+    //     await Moralis.Web3.executeFunction(getIsEnabledOptions)
+    //         .then( (result ) => {
+    //                 // setIsToggleEnabled(result);
+    //                 console.log('getIsEnabled for toggleId 0', result);
+    //             }
+    //         );
+    // }
     const[isToggleEnabled, setIsToggleEnabled] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const {
         isWeb3Enabled,
         isAuthenticated,
@@ -58,26 +67,59 @@ export default function Demo() {
         },
         ...optionsCore
     }
-    const getIsEnabled = async () => {
-        const result = await Moralis.Web3.executeFunction(getIsEnabledOptions)
-        setIsToggleEnabled(result)
-        console.log('isEnabled for toggleId 0', result);
-    }
 
 
     const updateToggle = async () => {
-        const result = await Moralis.Web3.executeFunction(updateToggleOptions)
-        console.log('updatedToggle', result)
-    }
+        setIsLoading(true);
+        await Moralis.Web3.executeFunction(updateToggleOptions)
+            .then(response=> {
+                    console.log('updatedToggle', response);
+        })
+            .then(() => {setIsLoading(false)})
+            .then(() => {
+                getIsEnabled()
+                    .then(newIsEnabled => {
+                        console.log("updating with setIsToggleEnabled" );
+                        console.log("old value:",isToggleEnabled);
+                        console.log("new value:", newIsEnabled);
+                        setIsToggleEnabled(newIsEnabled);
+                    });
+            });
+    };
+
+    const copy = isToggleEnabled ? "toggle is Enabled" : "toggle is not enabled";
+
     return (
         <div className={styles.container}>
             <h4>Demo!</h4>
 
-            <button onClick={updateToggle}> update Toggle</button>
+            <button onClick={
+                () => {
+                    setIsLoading(true);
+                    updateToggle()
+                        .then(() => {setIsLoading(false)})
+                        .then(() => {
+                            getIsEnabled()
+                                .then(newIsEnabled => {
+                                    console.log("updating with setIsToggleEnabled" );
+                                    console.log("old value:",isToggleEnabled);
+                                    console.log("new value:", newIsEnabled);
+                                    setIsToggleEnabled(newIsEnabled);
+                                });
+                        });
+                }}> update Toggle</button>
             <br/>
-            <button onClick={getIsEnabled}>getIsEnabled</button>
-            {isToggleEnabled && <h4>toggle is Enabled</h4>}
-            {!isToggleEnabled && <h4>toggle is not enabled</h4>}
+            <p>{isLoading && 'loading...'}</p>
+            <br/>
+            <button onClick={
+                () => {
+                    getIsEnabled()
+                        .then((isEnabled) => setIsToggleEnabled(isEnabled));
+                }}
+            >
+                getIsEnabled
+            </button>
+            <h4>{copy}</h4>
 
         </div>)
 
