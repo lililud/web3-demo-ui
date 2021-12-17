@@ -122,7 +122,7 @@ const OuterContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    align-items: center;
+    align-items: stretch;
 `;
 const Container = styled.div`
     
@@ -135,6 +135,7 @@ const StyledLoading = styled.div`
 `;
 
 const StyledBg = styled(Paper)`
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
