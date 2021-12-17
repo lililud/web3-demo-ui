@@ -17,7 +17,7 @@ export const getIsEnabled = async () => {
     const contract = new web3.eth.Contract(FeatureToggle.abi, contractAddress);
     const isEnabled = await contract.methods.getIsEnabled(0).call();
 
-    console.log('isEnabled', isEnabled);
+    console.log('isEnabled222', isEnabled);
     return isEnabled;
 }
 

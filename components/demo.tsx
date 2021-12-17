@@ -1,28 +1,33 @@
 import Moralis from "moralis";
-import {contract as contractAddress} from "../contractAddress";
-import FeatureToggle from "../abis/FeatureToggle.json";
-import {useState} from "react";
+
+import {useEffect, useState} from "react";
 import styles from "../styles/Home.module.css";
 import {getIsEnabled} from "../web3Calls/getIsEnabled";
 import {updateToggle} from "../web3Calls/updateToggle";
+import {
+    Button,
+    Card, CardActionArea, CardContent,
+    CircularProgress,
+    FormLabel,
+    Paper,
+    ToggleButton,
+    ToggleButtonGroup,
+    Typography
+} from "@mui/material";
+import defaultOptions from "../web3Calls/defaultOptions";
+import styled from "styled-components";
 
 export default function Demo() {
-    const[isToggleEnabled, setIsToggleEnabled] = useState(false);
+    const[isToggleEnabled, setIsToggleEnabled] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
-    const optionsCore = {
-        contractAddress: contractAddress,
-        abi: FeatureToggle.abi,
-    };
-
-
-    const getIsEnabledOptions = {
-        functionName: "getIsEnabled",
-        params: {
-            toggleId: 0
-        },
-        ...optionsCore
-    }
+    useEffect(() => {
+        // Invoke async request
+        getIsEnabled()
+            .then((result: boolean) => {setIsToggleEnabled(result)})
+            .catch(e => alert(`error getting isEnabled: ${e.message}`));
+        // No variable dependencies means this would run only once after the first render
+    }, []);
 
     const updateToggleOptions = {
         functionName: "updateToggle",
@@ -31,18 +36,16 @@ export default function Demo() {
             isEnabled: !isToggleEnabled,
             name: "shouldRenderCopy"
         },
-        ...optionsCore
+        ...defaultOptions
     }
 
 
     const updateFeatureToggle = async () => {
         setIsLoading(true);
         await Moralis.Web3.executeFunction(updateToggleOptions)
-            .then(response=> {
+            .then((response) => {
                 console.log('updatedToggle', response);
-            })
-            .then(() => {setIsLoading(false)})
-            .then(() => {
+                setIsLoading(false)
                 getIsEnabled()
                     .then(newIsEnabled => {
                         console.log("updating with setIsToggleEnabled" );
@@ -56,23 +59,90 @@ export default function Demo() {
     const copy = isToggleEnabled ? "toggle is Enabled" : "toggle is not enabled";
 
     return (
-        <div className={styles.container}>
-            <h4>Demo!</h4>
+        <OuterContainer>
 
-            <button onClick={updateFeatureToggle}> update Toggle</button>
-            <br/>
-            <p>{isLoading && 'loading...'}</p>
-            <br/>
-            <button onClick={
-                () => {
-                    getIsEnabled()
-                        .then((isEnabled) => setIsToggleEnabled(isEnabled));
-                }}
-            >
-                getIsEnabled
-            </button>
-            <h4>{copy}</h4>
 
-        </div>)
+                <Container>
+
+                <StyledBg elevation={2}>
+
+                <Typography variant="h5" color="text.primary" component="div">
+                    Toggles
+                </Typography>
+
+            <div>
+                <Typography variant="body1" color="text.secondary" component="div">
+                    Toggle #1
+                </Typography>
+                <ToggleButtonGroup
+                    color={isToggleEnabled ?? false ?"success" : "error"}
+                    value={isToggleEnabled}
+                    exclusive
+                    onChange={updateFeatureToggle}
+                    disabled={isLoading}
+                >
+                    <ToggleButton value={true}>On</ToggleButton>
+                    <ToggleButton value={false}>Off</ToggleButton>
+                </ToggleButtonGroup>
+            </div>
+
+
+                <StyledLoading>
+                    {isLoading && <CircularProgress color="secondary" />}
+                    {isLoading && <Typography variant="h5" color="secondary">updating toggle...</Typography>}
+
+                </StyledLoading>
+
+
+                </StyledBg>
+                </Container>
+
+
+                <Container>
+                    <StyledBg>
+                    <Button variant="contained" color="secondary" onClick={
+                        () => {
+                            getIsEnabled()
+                                .then((isEnabled) => setIsToggleEnabled(isEnabled));
+                        }}
+                    >
+                        refetch toggle
+                    </Button>
+                    <Typography variant="body1" color="text.secondary" component="div">
+                        "{!isLoading && copy}"
+                    </Typography>
+                    </StyledBg>
+                </Container>
+        </OuterContainer>
+
+    );
 
 }
+const OuterContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+`;
+const Container = styled.div`
+    
+    display: flex;
+    flex-direction: column;
+    
+`;
+const StyledLoading = styled.div`
+    
+`;
+
+const StyledBg = styled(Paper)`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+   
+    padding: 30px;
+    margin: 20px;
+    & > * {
+        padding: 15px;
+    }
+`;

@@ -1,5 +1,6 @@
 import { useMoralis } from 'react-moralis';
 import { useEffect} from 'react';
+import { Button } from '@mui/material';
 const MetamaskLogin = () => {
   const {
     isWeb3Enabled,
@@ -34,16 +35,18 @@ const MetamaskLogin = () => {
 
   return (
 
-    <button
+    <Button
       disabled={isAuthenticating}
       onClick={signInOrSignOut}
+      variant={"outlined"}
+      color={"secondary"}
     >
       {isLoading
         ? 'Loading...'
         : isLoggedIn
         ? 'Disconnect'
         : 'Connect and Log In'}
-    </button>
+    </Button>
   );
 };
 export default MetamaskLogin;
