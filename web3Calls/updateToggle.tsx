@@ -1,29 +1,26 @@
 import Moralis from "moralis";
-import {getIsEnabled} from "./getIsEnabled";
 import defaultOptions from "./defaultOptions";
-
 
 
 const updateToggleOptions = {
     functionName: "updateToggle",
-
     ...defaultOptions
 }
 
-export const updateToggle = async (isToggleEnabled: boolean, toggleName?: string) => {
+export const updateToggle = async (isToggleEnabled: boolean, toggleName?: string, toggleId?: number) => {
     const options = {
         ...updateToggleOptions,
         params: {
-            toggleId: 0,
+            toggleId: toggleId ?? 0,
             isEnabled: !isToggleEnabled,
             name: toggleName ?? "shouldRenderCopy"
         },
     }
 
-    await Moralis.Web3.executeFunction(options)
+    return await Moralis.Web3.executeFunction(options)
         .then(response=> {
             console.log('updatedToggle', response);
-        })
+        });
 
 };
 
