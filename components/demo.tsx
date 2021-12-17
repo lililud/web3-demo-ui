@@ -6,9 +6,7 @@ import {getIsEnabled} from "../web3Calls/getIsEnabled";
 import {updateToggle} from "../web3Calls/updateToggle";
 import {
     Button,
-    Card, CardActionArea, CardContent,
     CircularProgress,
-    FormLabel,
     Paper,
     ToggleButton,
     ToggleButtonGroup,
@@ -70,9 +68,9 @@ export default function Demo() {
                     Toggles
                 </Typography>
 
-            <div>
+            <Container>
                 <Typography variant="body1" color="text.secondary" component="div">
-                    Toggle #1
+                    shopMembershipModule
                 </Typography>
                 <ToggleButtonGroup
                     color={isToggleEnabled ?? false ?"success" : "error"}
@@ -84,7 +82,7 @@ export default function Demo() {
                     <ToggleButton value={true}>On</ToggleButton>
                     <ToggleButton value={false}>Off</ToggleButton>
                 </ToggleButtonGroup>
-            </div>
+            </Container>
 
 
                 <StyledLoading>
@@ -125,7 +123,7 @@ const OuterContainer = styled.div`
     align-items: stretch;
 `;
 const Container = styled.div`
-    
+    align-items:center;
     display: flex;
     flex-direction: column;
     
