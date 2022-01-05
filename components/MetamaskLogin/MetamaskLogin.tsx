@@ -29,7 +29,7 @@ const MetamaskLogin = () => {
     if (isAuthenticated) {
       enableWeb3();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, enableWeb3]);
 
 
 

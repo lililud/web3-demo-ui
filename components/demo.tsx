@@ -16,7 +16,7 @@ import defaultOptions from "../web3Calls/defaultOptions";
 import styled from "styled-components";
 
 export default function Demo() {
-    const[isToggleEnabled, setIsToggleEnabled] = useState(null);
+    const[isToggleEnabled, setIsToggleEnabled] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -107,7 +107,7 @@ export default function Demo() {
                         refetch toggle
                     </Button>
                     <Typography variant="body1" color="text.secondary" component="div">
-                        "{!isLoading && copy}"
+                        {!isLoading && copy}
                     </Typography>
                     </StyledBg>
                 </Container>
